@@ -1,0 +1,16 @@
+{
+  "modListVersion": 2,
+  "modList": [
+    {
+      "modid": "colormysky",
+      "name": "Bring Color to my Skies",
+      "description": "Adds night-time auroras to the Minecraft world",
+      "version": "${version}",
+      "mcversion": "${minecraft_version}",
+      "authorList": [
+        "heldplayer"
+      ],
+      "url": "http://minecraft.curseforge.com/mc-mods/236072-bring-color-to-my-skies"
+    }
+  ]
+}

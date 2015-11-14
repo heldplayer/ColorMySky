@@ -1,0 +1,9 @@
+{
+  "spacore:shader": {
+    "uniforms": [
+      "time",
+      "brightness",
+      "colorCorrection"
+    ]
+  }
+}

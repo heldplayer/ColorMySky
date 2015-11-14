@@ -1,0 +1,9 @@
+attribute vec4 gl_Vertex;
+uniform float time;
+uniform float brightness;
+varying vec3 fPosition;
+
+void main() {
+    gl_Position = ftransform();
+    fPosition = gl_Vertex.xyz;
+}
