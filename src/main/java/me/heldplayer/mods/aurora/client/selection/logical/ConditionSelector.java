@@ -107,9 +107,9 @@ public abstract class ConditionSelector extends EffectSelector {
                     return selector.getBrightness(world, player);
                 }
             }
-            return 0.0F;
+            return 1.0F;
         } else if ("last".equals(this.brightnessStrategy)) {
-            float last = 0.0F;
+            float last = 1.0F;
             for (EffectSelector selector : this.conditionals) {
                 if (selector.isValidNowFast(world, player)) {
                     last = selector.getBrightness(world, player);
