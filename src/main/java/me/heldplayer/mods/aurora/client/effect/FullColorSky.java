@@ -21,9 +21,24 @@ public class FullColorSky implements Effect {
         return ClientProxy.auroraShader != null && ClientProxy.auroraShader.getShader() != null;
     }
 
+    private float getBrightness(float partialTicks, WorldClient world) {
+        float angle = world.getCelestialAngle(partialTicks);
+        float brightness = 1.0F - ((float) Math.cos(angle * Math.PI * 2.0F) * 2F + 0.65F);
+
+        if (brightness < 0.0F) {
+            brightness = 0.0F;
+        }
+
+        if (brightness > 1.0F) {
+            brightness = 1.0F;
+        }
+
+        return brightness * brightness * 0.5F;
+    }
+
     @Override
     public void render(float partialTicks, WorldClient world, Minecraft mc, float brightness) {
-        float starBrightness = this.maxBrightness * brightness * (world.getStarBrightness(partialTicks) * (1.0F - world.getRainStrength(partialTicks)) - 0.1F);
+        float starBrightness = this.maxBrightness * brightness * (this.getBrightness(partialTicks, world) * (1.0F - world.getRainStrength(partialTicks)) - 0.1F);
         if (starBrightness > 0.0F) {
             ShaderProgram shader = ClientProxy.auroraShader.getShader();
             shader.bind();
