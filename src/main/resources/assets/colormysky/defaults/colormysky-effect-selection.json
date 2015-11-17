@@ -1,0 +1,60 @@
+[
+  {
+    "presets": [
+      {
+        "alias": "normal-moons",
+        "type": "moon-phase",
+        "phases": [
+          "newmoon",
+          "firstquarter",
+          "fullmoon",
+          "lastquarter"
+        ]
+      }
+    ]
+  },
+  {
+    "dimension-id": 0,
+    "selections": [
+      {
+        "type": "or",
+        "effect": {
+          "type": "full-color-sky"
+        },
+        "brightness-strategy": "max",
+        "selections": [
+          {
+            "type": "and",
+            "brightness-strategy": "max",
+            "selections": [
+              {
+                "type": "moon-phase",
+                "phases": [
+                  "waningcrescent",
+                  "waxingcrescent"
+                ]
+              },
+              {
+                "type": "biome",
+                "biomes": [
+                  "Swampland",
+                  "Swampland M"
+                ]
+              }
+            ]
+          },
+          {
+            "use-alias": "normal-moons"
+          },
+          {
+            "type": "biome",
+            "biomes": [
+              "Deep Ocean"
+            ],
+            "search-radius": 16
+          }
+        ]
+      }
+    ]
+  }
+]

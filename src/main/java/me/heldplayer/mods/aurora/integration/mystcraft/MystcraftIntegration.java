@@ -31,14 +31,14 @@ public class MystcraftIntegration {
 
     private static void getSymbolValsAPI(APIInstanceProvider provider) {
         try {
-            Object api = provider.getAPIInstance("symbolvalues-1");
+            Object api = provider.getAPIInstance("symbolvals-1");
             MystSymbol.getValsAPI(api);
         } catch (APIUndefined e) {
-            Objects.log.error("The Mystcraft symbol API is missing", e);
+            Objects.log.error("The Mystcraft symbol values API is missing", e);
         } catch (APIVersionUndefined e) {
-            Objects.log.error("Mystcraft can't count to 1, missing the symbol API", e);
+            Objects.log.error("Mystcraft can't count to 1, missing the symbol values API", e);
         } catch (APIVersionRemoved e) {
-            Objects.log.error("Version 1 of the Mystcraft symbol API was removed, NEI Mystcraft Plugin needs to be updated", e);
+            Objects.log.error("Version 1 of the Mystcraft symbol values API was removed, NEI Mystcraft Plugin needs to be updated", e);
         }
     }
 

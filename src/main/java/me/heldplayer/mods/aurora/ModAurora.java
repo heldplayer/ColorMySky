@@ -29,29 +29,8 @@ public class ModAurora extends SpACoreMod {
         @Configuration.DoubleMinMax(min = 0.0D, max = 1.0D)
         public double intensity = 1.0F;
 
-        @Configuration.Option(category = "client.moon_phases", side = Configuration.CSide.CLIENT)
-        public boolean newMoon = true;
-
-        @Configuration.Option(category = "client.moon_phases", side = Configuration.CSide.CLIENT)
-        public boolean waxingCrescent = false;
-
-        @Configuration.Option(category = "client.moon_phases", side = Configuration.CSide.CLIENT)
-        public boolean firstQuarter = true;
-
-        @Configuration.Option(category = "client.moon_phases", side = Configuration.CSide.CLIENT)
-        public boolean waxingGibbous = false;
-
-        @Configuration.Option(category = "client.moon_phases", side = Configuration.CSide.CLIENT)
-        public boolean fullMoon = true;
-
-        @Configuration.Option(category = "client.moon_phases", side = Configuration.CSide.CLIENT)
-        public boolean waningGibbous = false;
-
-        @Configuration.Option(category = "client.moon_phases", side = Configuration.CSide.CLIENT)
-        public boolean lastQuarter = true;
-
-        @Configuration.Option(category = "client.moon_phases", side = Configuration.CSide.CLIENT)
-        public boolean waningCrescent = false;
+        @Configuration.Option(category = "client", side = Configuration.CSide.CLIENT)
+        public boolean debug = false;
     }
 
     @Override
@@ -61,6 +40,12 @@ public class ModAurora extends SpACoreMod {
         Objects.log = event.getModLog();
 
         ModAurora.configManager = ConfigManager.registerConfig(ModAurora.config = new Config());
+        ModAurora.configManager.setReloadListener(new Runnable() {
+            @Override
+            public void run() {
+                ModAurora.proxy.reloadEffects();
+            }
+        });
 
         super.preInit(event);
     }

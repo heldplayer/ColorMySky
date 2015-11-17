@@ -3,38 +3,41 @@ package me.heldplayer.mods.aurora.client.render;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import java.lang.reflect.Method;
 import java.util.Random;
+import me.heldplayer.mods.aurora.client.selection.EffectSelector;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.*;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
-import net.minecraftforge.client.IRenderHandler;
 import net.specialattack.forge.core.client.GLState;
 import net.specialattack.forge.core.client.MC;
 import org.lwjgl.opengl.GL11;
 
-public class OverworldSkyRenderer extends IRenderHandler {
+public class OverworldSkyRenderer extends SkyRendererAurora {
 
     private static final ResourceLocation locationMoonPhasesPng = new ResourceLocation("textures/environment/moon_phases.png");
     private static final ResourceLocation locationSunPng = new ResourceLocation("textures/environment/sun.png");
 
-    private int starGLCallList;
-    private int glSkyList;
-    private int glSkyList2;
+    private static boolean starsMade = false;
+    private static int starGLCallList;
+    private static int glSkyList;
+    private static int glSkyList2;
 
-    private SphereRenderer sky = new SphereRenderer(200.0F, 3);
-
-    public OverworldSkyRenderer() {
-        this.starGLCallList = GLAllocation.generateDisplayLists(3);
+    private static void initStars() {
+        if (OverworldSkyRenderer.starsMade) {
+            return;
+        }
+        OverworldSkyRenderer.starsMade = true;
+        OverworldSkyRenderer.starGLCallList = GLAllocation.generateDisplayLists(3);
         GLState.glPushMatrix();
-        GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);
-        this.renderStars();
+        GL11.glNewList(OverworldSkyRenderer.starGLCallList, GL11.GL_COMPILE);
+        OverworldSkyRenderer.renderStars();
         GL11.glEndList();
         GLState.glPopMatrix();
         Tessellator tessellator = Tessellator.instance;
-        this.glSkyList = this.starGLCallList + 1;
-        GL11.glNewList(this.glSkyList, GL11.GL_COMPILE);
+        OverworldSkyRenderer.glSkyList = OverworldSkyRenderer.starGLCallList + 1;
+        GL11.glNewList(OverworldSkyRenderer.glSkyList, GL11.GL_COMPILE);
         byte b2 = 64;
         int i = 256 / b2 + 2;
         float f = 16.0F;
@@ -53,8 +56,8 @@ public class OverworldSkyRenderer extends IRenderHandler {
         }
 
         GL11.glEndList();
-        this.glSkyList2 = this.starGLCallList + 2;
-        GL11.glNewList(this.glSkyList2, GL11.GL_COMPILE);
+        OverworldSkyRenderer.glSkyList2 = OverworldSkyRenderer.starGLCallList + 2;
+        GL11.glNewList(OverworldSkyRenderer.glSkyList2, GL11.GL_COMPILE);
         f = -16.0F;
         tessellator.startDrawingQuads();
 
@@ -71,7 +74,7 @@ public class OverworldSkyRenderer extends IRenderHandler {
         GL11.glEndList();
     }
 
-    private void renderStars() {
+    private static void renderStars() {
         Random random = new Random(10842L);
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
@@ -119,10 +122,17 @@ public class OverworldSkyRenderer extends IRenderHandler {
         tessellator.draw();
     }
 
+    private SphereRenderer sky = new SphereRenderer(200.0F, 3);
+
+    public OverworldSkyRenderer(EffectSelector[] selectors) {
+        super(null, selectors);
+        OverworldSkyRenderer.initStars();
+    }
+
     @Override
     public void render(float partialTicks, WorldClient world, Minecraft mc) {
         this.renderDefaultSky(partialTicks, world, mc);
-        Aurora.renderAurora(partialTicks, world, mc, this.sky);
+        this.renderAdds(partialTicks, world, mc);
     }
 
     private static Method getFOVModifier;
@@ -153,7 +163,7 @@ public class OverworldSkyRenderer extends IRenderHandler {
         GLState.glDepthMask(false);
         GLState.glEnable(GL11.GL_FOG);
         GLState.glColor3f(f1, f2, f3);
-        GL11.glCallList(this.glSkyList);
+        GL11.glCallList(OverworldSkyRenderer.glSkyList);
         GLState.glDisable(GL11.GL_FOG);
         GLState.glDisable(GL11.GL_ALPHA_TEST);
         GLState.glEnable(GL11.GL_BLEND);
@@ -243,7 +253,7 @@ public class OverworldSkyRenderer extends IRenderHandler {
 
         if (f18 > 0.0F) {
             GLState.glColor4f(f18, f18, f18, f18);
-            GL11.glCallList(this.starGLCallList);
+            GL11.glCallList(OverworldSkyRenderer.starGLCallList);
         }
 
         GLState.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -258,7 +268,7 @@ public class OverworldSkyRenderer extends IRenderHandler {
         if (d0 < 0.0D) {
             GLState.glPushMatrix();
             GL11.glTranslatef(0.0F, 12.0F, 0.0F);
-            GL11.glCallList(this.glSkyList2);
+            GL11.glCallList(OverworldSkyRenderer.glSkyList2);
             GLState.glPopMatrix();
             f8 = 1.0F;
             f9 = -((float) (d0 + 65.0D));
@@ -296,7 +306,7 @@ public class OverworldSkyRenderer extends IRenderHandler {
 
         GLState.glPushMatrix();
         GL11.glTranslatef(0.0F, -((float) (d0 - 16.0D)), 0.0F);
-        GL11.glCallList(this.glSkyList2);
+        GL11.glCallList(OverworldSkyRenderer.glSkyList2);
         GLState.glPopMatrix();
         GLState.glEnable(GL11.GL_TEXTURE_2D);
         GLState.glDepthMask(true);

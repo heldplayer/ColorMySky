@@ -2,23 +2,8 @@ colormysky.cfg:client=Client
 colormysky.cfg:client.comment=Client side settings
 colormysky.cfg:client.intensity=Intensity
 colormysky.cfg:client.intensity.comment=The intensity of the shader effect. Can go from 0.0 to 1.0. Use this to lower the effect if you get nauseous or dizzy.
-colormysky.cfg:client.moon_phases=Moon Phases
-colormysky.cfg:client.moon_phases.comment=Set which phases of the moon the effect shows on. Only affects the overworld.
-colormysky.cfg:client.moon_phases.newMoon=New Moon
-colormysky.cfg:client.moon_phases.newMoon.comment=Whether to show the effect during the new moon.
-colormysky.cfg:client.moon_phases.waxingCrescent=Waxing Crescent
-colormysky.cfg:client.moon_phases.waxingCrescent.comment=Whether to show the effect during a waxing crescent.
-colormysky.cfg:client.moon_phases.firstQuarter=First Quarter
-colormysky.cfg:client.moon_phases.firstQuarter.comment=Whether to show the effect during the first quarter.
-colormysky.cfg:client.moon_phases.waxingGibbous=Waxing Gibbous
-colormysky.cfg:client.moon_phases.waxingGibbous.comment=Whether to show the effect during a waxing gibbous.
-colormysky.cfg:client.moon_phases.fullMoon=Full Moon
-colormysky.cfg:client.moon_phases.fullMoon.comment=Whether to show the effect during the full moon.
-colormysky.cfg:client.moon_phases.waningGibbous=Waning Gibbous
-colormysky.cfg:client.moon_phases.waningGibbous.comment=Whether to show the effect during a waning gibbous.
-colormysky.cfg:client.moon_phases.lastQuarter=Last Quarter
-colormysky.cfg:client.moon_phases.lastQuarter.comment=Whether to show the effect during the last quarter.
-colormysky.cfg:client.moon_phases.waningCrescent=Waning Crescent
-colormysky.cfg:client.moon_phases.waningCrescent.comment=Whether to show the effect during a waning crescent.
+colormysky.cfg:client.debug=Debug overlay
+colormysky.cfg:client.debug.comment=Enable the debug overlay to see how effects are selected.
+
 
 colormysky:symbol.myst.colorfulsky=Colorful Sky
