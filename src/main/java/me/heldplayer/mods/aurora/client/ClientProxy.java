@@ -88,6 +88,8 @@ public class ClientProxy extends CommonProxy {
         EffectManager.registerEffectSelectorType("nand", NandConditionSelector.class);
         EffectManager.registerEffectSelectorType("xor", XorConditionSelector.class);
         EffectManager.registerEffectSelectorType("xnor", XnorConditionSelector.class);
+        EffectManager.registerEffectSelectorType("true", TrueConditionSelector.class);
+        EffectManager.registerEffectSelectorType("false", FalseConditionSelector.class);
         EffectManager.reloadEffects();
     }
 
