@@ -1,18 +1,5 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-    }
+plugins {
+    id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 
 repositories {
@@ -28,8 +15,6 @@ idea {
         inheritOutputDirs = true
     }
 }
-
-apply plugin: 'forge'
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
@@ -52,8 +37,9 @@ group = "me.heldplayer.mods.aurora" // http://maven.apache.org/guides/mini/guide
 archivesBaseName = "ColorMySky"
 
 minecraft {
-    version = minecraft_version + "-" + forge_version + "-" + minecraft_version
+    version = minecraft_version + "-" + forge_version
     runDir = "../../jar"
+    mappings = "snapshot_20141130"
 
     if (project.hasProperty("signature"))
         replace "@FINGERPRINT@", project.signature
