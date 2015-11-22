@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.specialattack.forge.core.client.shader.ShaderProgram;
-
+/*
 public class SymbolColorSky implements IAgeSymbol {
 
     private String[] words;
@@ -103,3 +103,4 @@ public class SymbolColorSky implements IAgeSymbol {
         }
     }
 }
+*/

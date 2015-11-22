@@ -1,5 +1,5 @@
 package blue.heldplayer.mods.aurora.integration.mystcraft;
-
+/*
 import blue.heldplayer.mods.aurora.Objects;
 import com.xcompwiz.mystcraft.api.APIInstanceProvider;
 import com.xcompwiz.mystcraft.api.exception.APIUndefined;
@@ -55,3 +55,4 @@ public class MystcraftIntegration {
         }
     }
 }
+*/

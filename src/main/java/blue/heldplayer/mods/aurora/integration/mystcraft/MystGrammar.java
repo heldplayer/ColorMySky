@@ -1,5 +1,5 @@
 package blue.heldplayer.mods.aurora.integration.mystcraft;
-
+/*
 import com.xcompwiz.mystcraft.api.hook.GrammarAPI;
 
 public class MystGrammar {
@@ -9,3 +9,4 @@ public class MystGrammar {
         api.registerGrammarRule("Visual", 3, "ColorfulSky");
     }
 }
+*/
