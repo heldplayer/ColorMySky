@@ -17,7 +17,7 @@ public class ModAurora extends SpACoreMod {
     @SidedProxy(clientSide = Objects.CLIENT_PROXY, serverSide = Objects.SERVER_PROXY)
     public static CommonProxy proxy;
 
-    public static Config config;
+    public static ModAurora.Config config;
     public static ConfigManager configManager;
 
     @Configuration("colormysky.cfg")
@@ -37,7 +37,7 @@ public class ModAurora extends SpACoreMod {
     public void preInit(FMLPreInitializationEvent event) {
         Objects.log = event.getModLog();
 
-        ModAurora.configManager = ConfigManager.registerConfig(ModAurora.config = new Config());
+        ModAurora.configManager = ConfigManager.registerConfig(ModAurora.config = new ModAurora.Config());
         ModAurora.configManager.setReloadListener(new Runnable() {
             @Override
             public void run() {
