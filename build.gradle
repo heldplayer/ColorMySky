@@ -7,7 +7,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.0-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -16,13 +16,6 @@ repositories {
     maven {
         name 'MinecraftS3'
         url 'http://s3.amazonaws.com/Minecraft.Download/libraries'
-    }
-}
-
-apply plugin: 'idea'
-idea {
-    module {
-        inheritOutputDirs = true
     }
 }
 
@@ -49,7 +42,7 @@ archivesBaseName = "ColorMySky"
 minecraft {
     version = minecraft_version + "-" + forge_version
     runDir = "../../jar"
-    mappings = "snapshot_20141130"
+    mappings = "stable_20"
     useDepAts = true
 
     if (project.hasProperty("signature"))

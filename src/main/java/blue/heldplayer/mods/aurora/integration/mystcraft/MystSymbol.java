@@ -1,8 +1,8 @@
 package blue.heldplayer.mods.aurora.integration.mystcraft;
-
+/*
 import com.xcompwiz.mystcraft.api.hook.SymbolAPI;
 import com.xcompwiz.mystcraft.api.hook.SymbolValuesAPI;
-/*
+
 public class MystSymbol {
 
     private static SymbolColorSky colorfulSky = new SymbolColorSky();

@@ -6,6 +6,7 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.renderer.vertex.VertexFormatElement;
@@ -37,7 +38,7 @@ public class OverworldSkyRenderer extends SkyRendererAurora {
             return;
         }
         OverworldSkyRenderer.vertexBufferFormat = new VertexFormat();
-        OverworldSkyRenderer.vertexBufferFormat.setElement(new VertexFormatElement(0, VertexFormatElement.EnumType.FLOAT, VertexFormatElement.EnumUsage.POSITION, 3));
+        OverworldSkyRenderer.vertexBufferFormat.addElement(new VertexFormatElement(0, VertexFormatElement.EnumType.FLOAT, VertexFormatElement.EnumUsage.POSITION, 3));
         OverworldSkyRenderer.vboEnabled = OpenGlHelper.useVbo();
         OverworldSkyRenderer.generateStars();
         OverworldSkyRenderer.generateSky();
@@ -62,7 +63,7 @@ public class OverworldSkyRenderer extends SkyRendererAurora {
             OverworldSkyRenderer.renderSky(worldrenderer, -16.0F, true);
             worldrenderer.finishDrawing();
             worldrenderer.reset();
-            OverworldSkyRenderer.sky2VBO.bufferData(worldrenderer.getByteBuffer(), worldrenderer.getByteIndex());
+            OverworldSkyRenderer.sky2VBO.bufferData(worldrenderer.getByteBuffer());
         } else {
             OverworldSkyRenderer.glSkyList2 = GLAllocation.generateDisplayLists(1);
             GL11.glNewList(OverworldSkyRenderer.glSkyList2, GL11.GL_COMPILE);
@@ -91,7 +92,7 @@ public class OverworldSkyRenderer extends SkyRendererAurora {
             OverworldSkyRenderer.renderSky(worldrenderer, 16.0F, false);
             worldrenderer.finishDrawing();
             worldrenderer.reset();
-            OverworldSkyRenderer.skyVBO.bufferData(worldrenderer.getByteBuffer(), worldrenderer.getByteIndex());
+            OverworldSkyRenderer.skyVBO.bufferData(worldrenderer.getByteBuffer());
         } else {
             OverworldSkyRenderer.glSkyList = GLAllocation.generateDisplayLists(1);
             GL11.glNewList(OverworldSkyRenderer.glSkyList, GL11.GL_COMPILE);
@@ -102,9 +103,7 @@ public class OverworldSkyRenderer extends SkyRendererAurora {
     }
 
     private static void renderSky(WorldRenderer worldRendererIn, float p_174968_2_, boolean p_174968_3_) {
-        boolean flag1 = true;
-        boolean flag2 = true;
-        worldRendererIn.startDrawingQuads();
+        worldRendererIn.begin(7, DefaultVertexFormats.POSITION);
 
         for (int i = -384; i <= 384; i += 64) {
             for (int j = -384; j <= 384; j += 64) {
@@ -116,10 +115,10 @@ public class OverworldSkyRenderer extends SkyRendererAurora {
                     f1 = (float) (i + 64);
                 }
 
-                worldRendererIn.addVertex((double) f1, (double) p_174968_2_, (double) j);
-                worldRendererIn.addVertex((double) f2, (double) p_174968_2_, (double) j);
-                worldRendererIn.addVertex((double) f2, (double) p_174968_2_, (double) (j + 64));
-                worldRendererIn.addVertex((double) f1, (double) p_174968_2_, (double) (j + 64));
+                worldRendererIn.pos((double) f1, (double) p_174968_2_, (double) j).endVertex();
+                worldRendererIn.pos((double) f2, (double) p_174968_2_, (double) j).endVertex();
+                worldRendererIn.pos((double) f2, (double) p_174968_2_, (double) (j + 64)).endVertex();
+                worldRendererIn.pos((double) f1, (double) p_174968_2_, (double) (j + 64)).endVertex();
             }
         }
     }
@@ -142,7 +141,7 @@ public class OverworldSkyRenderer extends SkyRendererAurora {
             OverworldSkyRenderer.renderStars(worldrenderer);
             worldrenderer.finishDrawing();
             worldrenderer.reset();
-            OverworldSkyRenderer.starVBO.bufferData(worldrenderer.getByteBuffer(), worldrenderer.getByteIndex());
+            OverworldSkyRenderer.starVBO.bufferData(worldrenderer.getByteBuffer());
         } else {
             OverworldSkyRenderer.starGLCallList = GLAllocation.generateDisplayLists(1);
             GlStateManager.pushMatrix();
@@ -156,7 +155,7 @@ public class OverworldSkyRenderer extends SkyRendererAurora {
 
     private static void renderStars(WorldRenderer worldRendererIn) {
         Random random = new Random(10842L);
-        worldRendererIn.startDrawingQuads();
+        worldRendererIn.begin(7, DefaultVertexFormats.POSITION);
 
         for (int i = 0; i < 1500; ++i) {
             double d0 = (double) (random.nextFloat() * 2.0F - 1.0F);
@@ -184,17 +183,15 @@ public class OverworldSkyRenderer extends SkyRendererAurora {
                 double d16 = Math.cos(d14);
 
                 for (int j = 0; j < 4; ++j) {
-                    double d17 = 0.0D;
                     double d18 = (double) ((j & 2) - 1) * d3;
                     double d19 = (double) ((j + 1 & 2) - 1) * d3;
-                    double d20 = 0.0D;
                     double d21 = d18 * d16 - d19 * d15;
                     double d22 = d19 * d16 + d18 * d15;
                     double d23 = d21 * d12 + 0.0D * d13;
                     double d24 = 0.0D * d12 - d21 * d13;
                     double d25 = d24 * d9 - d22 * d10;
                     double d26 = d22 * d9 + d24 * d10;
-                    worldRendererIn.addVertex(d5 + d25, d6 + d23, d7 + d26);
+                    worldRendererIn.pos(d5 + d25, d6 + d23, d7 + d26).endVertex();
                 }
             }
         }
@@ -226,14 +223,14 @@ public class OverworldSkyRenderer extends SkyRendererAurora {
         float f2 = (float) vec3.yCoord;
         float f3 = (float) vec3.zCoord;
 
-        //if (pass != 2) {
-        float f4 = (f1 * 30.0F + f2 * 59.0F + f3 * 11.0F) / 100.0F;
-        float f5 = (f1 * 30.0F + f2 * 70.0F) / 100.0F;
-        float f6 = (f1 * 30.0F + f3 * 70.0F) / 100.0F;
-        f1 = f4;
-        f2 = f5;
-        f3 = f6;
-        //}
+        if (mc.gameSettings.anaglyph) {
+            float f4 = (f1 * 30.0F + f2 * 59.0F + f3 * 11.0F) / 100.0F;
+            float f5 = (f1 * 30.0F + f2 * 70.0F) / 100.0F;
+            float f6 = (f1 * 30.0F + f3 * 70.0F) / 100.0F;
+            f1 = f4;
+            f2 = f5;
+            f3 = f6;
+        }
 
         GlStateManager.color(f1, f2, f3);
         Tessellator tessellator = Tessellator.getInstance();
@@ -277,26 +274,23 @@ public class OverworldSkyRenderer extends SkyRendererAurora {
             f9 = afloat[2];
             float f12;
 
-            //if (pass != 2) {
-            f10 = (f7 * 30.0F + f8 * 59.0F + f9 * 11.0F) / 100.0F;
-            f11 = (f7 * 30.0F + f8 * 70.0F) / 100.0F;
-            f12 = (f7 * 30.0F + f9 * 70.0F) / 100.0F;
-            f7 = f10;
-            f8 = f11;
-            f9 = f12;
-            //}
+            if (mc.gameSettings.anaglyph) {
+                f10 = (f7 * 30.0F + f8 * 59.0F + f9 * 11.0F) / 100.0F;
+                f11 = (f7 * 30.0F + f8 * 70.0F) / 100.0F;
+                f12 = (f7 * 30.0F + f9 * 70.0F) / 100.0F;
+                f7 = f10;
+                f8 = f11;
+                f9 = f12;
+            }
 
-            worldrenderer.startDrawing(6);
-            worldrenderer.setColorRGBA_F(f7, f8, f9, afloat[3]);
-            worldrenderer.addVertex(0.0D, 100.0D, 0.0D);
-            boolean flag = true;
-            worldrenderer.setColorRGBA_F(afloat[0], afloat[1], afloat[2], 0.0F);
+            worldrenderer.begin(6, DefaultVertexFormats.POSITION_COLOR);
+            worldrenderer.pos(0.0D, 100.0D, 0.0D).color(f7, f8, f9, afloat[3]).endVertex();
 
             for (int j = 0; j <= 16; ++j) {
                 f12 = (float) j * (float) Math.PI * 2.0F / 16.0F;
                 float f13 = MathHelper.sin(f12);
                 float f14 = MathHelper.cos(f12);
-                worldrenderer.addVertex((double) (f13 * 120.0F), (double) (f14 * 120.0F), (double) (-f14 * 40.0F * afloat[3]));
+                worldrenderer.pos((double) (f13 * 120.0F), (double) (f14 * 120.0F), (double) (-f14 * 40.0F * afloat[3])).color(afloat[0], afloat[1], afloat[2], 0.0F).endVertex();
             }
 
             tessellator.draw();
@@ -314,11 +308,11 @@ public class OverworldSkyRenderer extends SkyRendererAurora {
         GlStateManager.rotate(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
         f11 = 30.0F;
         mc.getTextureManager().bindTexture(OverworldSkyRenderer.locationSunPng);
-        worldrenderer.startDrawingQuads();
-        worldrenderer.addVertexWithUV((double) (-f11), 100.0D, (double) (-f11), 0.0D, 0.0D);
-        worldrenderer.addVertexWithUV((double) f11, 100.0D, (double) (-f11), 1.0D, 0.0D);
-        worldrenderer.addVertexWithUV((double) f11, 100.0D, (double) f11, 1.0D, 1.0D);
-        worldrenderer.addVertexWithUV((double) (-f11), 100.0D, (double) f11, 0.0D, 1.0D);
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        worldrenderer.pos((double) (-f11), 100.0D, (double) (-f11)).tex(0.0D, 0.0D).endVertex();
+        worldrenderer.pos((double) f11, 100.0D, (double) (-f11)).tex(1.0D, 0.0D).endVertex();
+        worldrenderer.pos((double) f11, 100.0D, (double) f11).tex(1.0D, 1.0D).endVertex();
+        worldrenderer.pos((double) (-f11), 100.0D, (double) f11).tex(0.0D, 1.0D).endVertex();
         tessellator.draw();
         f11 = 20.0F;
         mc.getTextureManager().bindTexture(OverworldSkyRenderer.locationMoonPhasesPng);
@@ -329,11 +323,11 @@ public class OverworldSkyRenderer extends SkyRendererAurora {
         float f16 = (float) i1 / 2.0F;
         float f17 = (float) (l + 1) / 4.0F;
         float f18 = (float) (i1 + 1) / 2.0F;
-        worldrenderer.startDrawingQuads();
-        worldrenderer.addVertexWithUV((double) (-f11), -100.0D, (double) f11, (double) f17, (double) f18);
-        worldrenderer.addVertexWithUV((double) f11, -100.0D, (double) f11, (double) f15, (double) f18);
-        worldrenderer.addVertexWithUV((double) f11, -100.0D, (double) (-f11), (double) f15, (double) f16);
-        worldrenderer.addVertexWithUV((double) (-f11), -100.0D, (double) (-f11), (double) f17, (double) f16);
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        worldrenderer.pos((double) (-f11), -100.0D, (double) f11).tex((double) f17, (double) f18).endVertex();
+        worldrenderer.pos((double) f11, -100.0D, (double) f11).tex((double) f15, (double) f18).endVertex();
+        worldrenderer.pos((double) f11, -100.0D, (double) (-f11)).tex((double) f15, (double) f16).endVertex();
+        worldrenderer.pos((double) (-f11), -100.0D, (double) (-f11)).tex((double) f17, (double) f16).endVertex();
         tessellator.draw();
         GlStateManager.disableTexture2D();
         float f19 = world.getStarBrightness(partialTicks) * f7;
@@ -379,28 +373,27 @@ public class OverworldSkyRenderer extends SkyRendererAurora {
 
             GlStateManager.popMatrix();
             f10 = -((float) (d0 + 65.0D));
-            worldrenderer.startDrawingQuads();
-            worldrenderer.setColorRGBA_I(0, 255);
-            worldrenderer.addVertex(-1.0D, (double) f10, 1.0D);
-            worldrenderer.addVertex(1.0D, (double) f10, 1.0D);
-            worldrenderer.addVertex(1.0D, -1.0D, 1.0D);
-            worldrenderer.addVertex(-1.0D, -1.0D, 1.0D);
-            worldrenderer.addVertex(-1.0D, -1.0D, -1.0D);
-            worldrenderer.addVertex(1.0D, -1.0D, -1.0D);
-            worldrenderer.addVertex(1.0D, (double) f10, -1.0D);
-            worldrenderer.addVertex(-1.0D, (double) f10, -1.0D);
-            worldrenderer.addVertex(1.0D, -1.0D, -1.0D);
-            worldrenderer.addVertex(1.0D, -1.0D, 1.0D);
-            worldrenderer.addVertex(1.0D, (double) f10, 1.0D);
-            worldrenderer.addVertex(1.0D, (double) f10, -1.0D);
-            worldrenderer.addVertex(-1.0D, (double) f10, -1.0D);
-            worldrenderer.addVertex(-1.0D, (double) f10, 1.0D);
-            worldrenderer.addVertex(-1.0D, -1.0D, 1.0D);
-            worldrenderer.addVertex(-1.0D, -1.0D, -1.0D);
-            worldrenderer.addVertex(-1.0D, -1.0D, -1.0D);
-            worldrenderer.addVertex(-1.0D, -1.0D, 1.0D);
-            worldrenderer.addVertex(1.0D, -1.0D, 1.0D);
-            worldrenderer.addVertex(1.0D, -1.0D, -1.0D);
+            worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+            worldrenderer.pos(-1.0D, (double) f10, 1.0D).color(0, 0, 0, 255).endVertex();
+            worldrenderer.pos(1.0D, (double) f10, 1.0D).color(0, 0, 0, 255).endVertex();
+            worldrenderer.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+            worldrenderer.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+            worldrenderer.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+            worldrenderer.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+            worldrenderer.pos(1.0D, (double) f10, -1.0D).color(0, 0, 0, 255).endVertex();
+            worldrenderer.pos(-1.0D, (double) f10, -1.0D).color(0, 0, 0, 255).endVertex();
+            worldrenderer.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+            worldrenderer.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+            worldrenderer.pos(1.0D, (double) f10, 1.0D).color(0, 0, 0, 255).endVertex();
+            worldrenderer.pos(1.0D, (double) f10, -1.0D).color(0, 0, 0, 255).endVertex();
+            worldrenderer.pos(-1.0D, (double) f10, -1.0D).color(0, 0, 0, 255).endVertex();
+            worldrenderer.pos(-1.0D, (double) f10, 1.0D).color(0, 0, 0, 255).endVertex();
+            worldrenderer.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+            worldrenderer.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+            worldrenderer.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+            worldrenderer.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+            worldrenderer.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+            worldrenderer.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
             tessellator.draw();
         }
 

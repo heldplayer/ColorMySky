@@ -1,5 +1,5 @@
 package blue.heldplayer.mods.aurora.integration.mystcraft;
-
+/*
 import blue.heldplayer.mods.aurora.ModAurora;
 import blue.heldplayer.mods.aurora.client.ClientProxy;
 import blue.heldplayer.mods.aurora.client.render.SphereRenderer;
@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.specialattack.forge.core.client.shader.ShaderProgram;
-/*
+
 public class SymbolColorSky implements IAgeSymbol {
 
     private String[] words;

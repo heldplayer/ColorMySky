@@ -9,7 +9,6 @@ public class SphereRenderer {
     private float[][][] triangles;
 
     public SphereRenderer(float radius, int breakdown) {
-        int triangleCount = 4;
         List<float[][]> oldTriangles, newTriangles;
         newTriangles = new ArrayList<float[][]>();
         newTriangles.add(new float[][] { new float[] { 0.0F, radius, 0.0F }, new float[] { 0.0F, 0.0F, radius }, new float[] { radius, 0.0F, 0.0F } });
